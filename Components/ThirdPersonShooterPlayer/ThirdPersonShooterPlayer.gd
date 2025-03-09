@@ -5,7 +5,9 @@ extends CharacterBody3D
 
 #region Movement
 var vecMovement:Vector3 = Vector3.ZERO
-var walkingSpeed:float = 4.0
+var walkingSpeed:float = 5.0
+var yMovement:float = 0.0
+var jumpStrength:float = 10.0
 #endregion
 
 
@@ -26,6 +28,15 @@ func handleMovement(_delta:float)->void:
 	var targetBodyRotation:float = camera.pivotRot.rotation.y*isPlayerMoving + body.rotation.y*isPlayerStandingStill
 	body.rotation.y = lerp_angle(body.rotation.y, targetBodyRotation, 12*_delta)
 	
+	# gravidade e pulo
+	if(self.is_on_floor()):
+		if(Input.is_action_just_pressed("Jump")):
+			yMovement += jumpStrength
+	else:
+		yMovement -= 20*_delta
+		pass
+	
 	self.velocity = vecMovement * walkingSpeed
+	self.velocity.y = yMovement
 	self.move_and_slide()
 	pass
