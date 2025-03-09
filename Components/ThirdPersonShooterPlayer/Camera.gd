@@ -1,3 +1,4 @@
+class_name TpsCamera
 extends Node3D
 
 @onready var pivotHeight:Marker3D = $PivotHeight
