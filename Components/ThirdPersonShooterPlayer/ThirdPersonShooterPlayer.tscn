@@ -21,6 +21,12 @@ script = ExtResource("1_ivt6l")
 
 [node name="Camera" type="Node3D" parent="."]
 script = ExtResource("2_6vp7m")
+pathPivotHeight = NodePath("PivotHeight")
+pathPivotRot = NodePath("PivotHeight/PivotRot")
+pathPivotBob = NodePath("PivotHeight/PivotRot/PivotBob")
+pathPivotShake = NodePath("PivotHeight/PivotRot/PivotBob/PivotShake")
+pathRaycast = NodePath("PivotHeight/PivotRot/PivotBob/PivotShake/RayCast3D")
+pathCamera = NodePath("PivotHeight/PivotRot/PivotBob/PivotShake/Camera3D")
 metadata/_edit_lock_ = true
 
 [node name="PivotHeight" type="Marker3D" parent="Camera"]
@@ -30,13 +36,19 @@ metadata/_edit_lock_ = true
 [node name="PivotRot" type="Marker3D" parent="Camera/PivotHeight"]
 metadata/_edit_lock_ = true
 
-[node name="RayCast3D" type="RayCast3D" parent="Camera/PivotHeight/PivotRot"]
+[node name="PivotBob" type="Marker3D" parent="Camera/PivotHeight/PivotRot"]
+metadata/_edit_lock_ = true
+
+[node name="PivotShake" type="Marker3D" parent="Camera/PivotHeight/PivotRot/PivotBob"]
+metadata/_edit_lock_ = true
+
+[node name="RayCast3D" type="RayCast3D" parent="Camera/PivotHeight/PivotRot/PivotBob/PivotShake"]
 transform = Transform3D(0.965926, -0.0669873, 0.25, 0, 0.965926, 0.258819, -0.258819, -0.25, 0.933013, 0, 0, 0)
 target_position = Vector3(0, 0, 5)
 collision_mask = 7
 metadata/_edit_lock_ = true
 
-[node name="Camera3D" type="Camera3D" parent="Camera/PivotHeight/PivotRot"]
+[node name="Camera3D" type="Camera3D" parent="Camera/PivotHeight/PivotRot/PivotBob/PivotShake"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.2, 1.3, 4.7)
 current = true
 metadata/_edit_lock_ = true

@@ -1,3 +1,4 @@
+class_name TpsPlayer
 extends CharacterBody3D
 
 @onready var body:Node3D = $Body
@@ -8,6 +9,8 @@ var vecMovement:Vector3 = Vector3.ZERO
 var walkingSpeed:float = 5.0
 var yMovement:float = 0.0
 var jumpStrength:float = 10.0
+var isMoving:int = 0
+var isStandingStill:int = 0
 #endregion
 
 
@@ -20,12 +23,13 @@ func handleMovement(_delta:float)->void:
 	# movimentacao horizontal pelo jogador
 	vecMovement = (Input.get_action_strength("MoveRight") - Input.get_action_strength("MoveLeft")) * body.global_transform.basis.x
 	vecMovement += (Input.get_action_strength("MoveBackwards") - Input.get_action_strength("MoveFoward")) * body.global_transform.basis.z
+	vecMovement = vecMovement.normalized()
 	vecMovement.y = 0.0
 	
 	# rotacao do corpo na direcao da camera
-	var isPlayerMoving:int = int( vecMovement.x != 0 or vecMovement.z != 0 )
-	var isPlayerStandingStill:int = int( vecMovement.x == 0 and vecMovement.z == 0 )
-	var targetBodyRotation:float = camera.pivotRot.rotation.y*isPlayerMoving + body.rotation.y*isPlayerStandingStill
+	isMoving = int( vecMovement.x != 0 or vecMovement.z != 0 )
+	isStandingStill = int( vecMovement.x == 0 and vecMovement.z == 0 )
+	var targetBodyRotation:float = camera.pivotRot.rotation.y*isMoving + body.rotation.y*isStandingStill
 	body.rotation.y = lerp_angle(body.rotation.y, targetBodyRotation, 12*_delta)
 	
 	# gravidade e pulo
