@@ -23,7 +23,7 @@ var cameraSide:int = 1
 #region Head Bobbing
 const WALK_BOB_FREQUENCY:float = 0.007
 const RUN_BOB_FREQUENCY_MULTIPLIER:float = 3.0
-const MAX_BOB_AMPLITUDE:float = 0.15
+const MAX_BOB_AMPLITUDE:float = 0.05
 var currentBobAmplitude:float = 0.0
 #endregion
 
@@ -67,6 +67,8 @@ func handleCameraSide(_delta:float)->void:
 
 func handleCameraBobbing(_delta:float)->void:
 	currentBobAmplitude = lerp(currentBobAmplitude, MAX_BOB_AMPLITUDE * player.isMoving, 10*_delta)
-	pivotBob.position.x =  cos(Time.get_ticks_msec() * WALK_BOB_FREQUENCY) * currentBobAmplitude
-	pivotBob.position.y =  sin(2*Time.get_ticks_msec() * WALK_BOB_FREQUENCY) * currentBobAmplitude
+	var sprintFrequencyMultiplier:float = (1.0*int(not player.isSprinting) + int(player.isSprinting) * 1.5)
+	var sprintAmplitudeMultiplier:float = (1.0*int(not player.isSprinting) + int(player.isSprinting) * 2.0)
+	pivotBob.position.x =  0.75*cos(Time.get_ticks_msec() * WALK_BOB_FREQUENCY*sprintFrequencyMultiplier) * currentBobAmplitude * sprintAmplitudeMultiplier
+	pivotBob.position.y =  sin(2*Time.get_ticks_msec() * WALK_BOB_FREQUENCY*sprintFrequencyMultiplier) * currentBobAmplitude * sprintAmplitudeMultiplier
 	pass

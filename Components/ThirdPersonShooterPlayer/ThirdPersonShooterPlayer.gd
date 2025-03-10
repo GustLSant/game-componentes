@@ -13,6 +13,14 @@ var isMoving:int = 0
 var isStandingStill:int = 0
 #endregion
 
+#region Sprint
+var stamina:float = 100.0
+var isSprinting:bool = false
+const SPRINT_STAMINA_COST:float = 20.0
+const STAMINA_RECOVER_FACTOR:float = 5.0
+const SPRINT_SPEED_MULTIPLIER:float = 2.0
+#endregion
+
 
 func _physics_process(_delta:float)->void:
 	handleMovement(_delta)
@@ -31,6 +39,17 @@ func handleMovement(_delta:float)->void:
 	isStandingStill = int( vecMovement.x == 0 and vecMovement.z == 0 )
 	var targetBodyRotation:float = camera.pivotRot.rotation.y*isMoving + body.rotation.y*isStandingStill
 	body.rotation.y = lerp_angle(body.rotation.y, targetBodyRotation, 12*_delta)
+	
+	# sprint activation
+	if(Input.is_action_just_pressed("Sprint") and stamina > SPRINT_STAMINA_COST): isSprinting = !isSprinting
+	isSprinting = isSprinting and isMoving and (stamina > 0.0)
+	
+	# sprint usage
+	vecMovement = vecMovement*SPRINT_SPEED_MULTIPLIER*int(isSprinting) + vecMovement*int(not isSprinting)
+	stamina += -SPRINT_STAMINA_COST*_delta*int(isSprinting) + STAMINA_RECOVER_FACTOR*_delta*int(not isSprinting)
+	stamina = clamp(stamina, 0.0, 100.0)
+	$Label.text = str(stamina)
+	$Label2.text = 'isSprinting: ' + str(isSprinting)
 	
 	# gravidade e pulo
 	if(self.is_on_floor()):

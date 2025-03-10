@@ -68,3 +68,13 @@ mesh = SubResource("BoxMesh_sc67x")
 [node name="CollShape" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
 shape = SubResource("BoxShape3D_6vp7m")
+
+[node name="Label" type="Label" parent="."]
+offset_right = 40.0
+offset_bottom = 23.0
+
+[node name="Label2" type="Label" parent="."]
+offset_left = 3.0
+offset_top = 41.0
+offset_right = 43.0
+offset_bottom = 64.0
