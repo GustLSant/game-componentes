@@ -23,7 +23,7 @@ var cameraSide:int = 1
 #region Head Bobbing
 const WALK_BOB_FREQUENCY:float = 0.007
 const RUN_BOB_FREQUENCY_MULTIPLIER:float = 3.0
-const MAX_BOB_AMPLITUDE:float = 0.05
+const MAX_BOB_AMPLITUDE:float = 0.035
 var currentBobAmplitude:float = 0.0
 #endregion
 
@@ -52,7 +52,7 @@ func _process(_delta:float)->void:
 func handleCameraCollision()->void:
 	if(raycast.is_colliding()):
 		var vecToCollPoint = raycast.get_collision_point() - raycast.global_position
-		camera.global_position = raycast.get_collision_point() - vecToCollPoint.normalized()*0.1
+		camera.global_position = raycast.get_collision_point() - vecToCollPoint.normalized()*0.2
 	else:
 		camera.global_position = raycast.global_position + raycast.global_transform.basis.z * raycast.target_position.z
 		pass

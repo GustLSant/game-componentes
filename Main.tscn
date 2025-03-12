@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://bvjwiank6nnwe"]
+[gd_scene load_steps=10 format=3 uid="uid://bvjwiank6nnwe"]
 
 [ext_resource type="Script" uid="uid://3e3wx6xwne52" path="res://Main.gd" id="1_2yxtq"]
 [ext_resource type="PackedScene" uid="uid://p2wyutg0uccu" path="res://Components/ThirdPersonShooterPlayer/ThirdPersonShooterPlayer.tscn" id="1_ukb8q"]
@@ -13,6 +13,14 @@ size = Vector2(200, 200)
 albedo_color = Color(0.412152, 0.412152, 0.412152, 1)
 
 [sub_resource type="BoxMesh" id="BoxMesh_r0du0"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_uu6xs"]
+size = Vector3(1, 10.37, 13.65)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_r0du0"]
+albedo_color = Color(0.546849, 0.106131, 0, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_cm0pq"]
 
 [node name="Main" type="Node3D"]
 script = ExtResource("1_2yxtq")
@@ -103,3 +111,16 @@ mesh = SubResource("BoxMesh_r0du0")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10.6867, 0.5, -0.556103)
 material_override = SubResource("StandardMaterial3D_uu6xs")
 mesh = SubResource("BoxMesh_r0du0")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, 0, 0)
+collision_layer = 2
+collision_mask = 0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D"]
+shape = SubResource("BoxShape3D_uu6xs")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="StaticBody3D"]
+transform = Transform3D(1, 0, 0, 0, 9.37, 0, 0, 0, 13.635, 0, 0.5, 0)
+material_override = SubResource("StandardMaterial3D_r0du0")
+mesh = SubResource("BoxMesh_cm0pq")
