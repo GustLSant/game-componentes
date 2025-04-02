@@ -8,9 +8,10 @@ extends CharacterBody3D
 var vecMovement:Vector3 = Vector3.ZERO
 var walkingSpeed:float = 5.0
 var yMovement:float = 0.0
-var jumpStrength:float = 10.0
 var isMoving:int = 0
 var isStandingStill:int = 0
+const JUMP_STRENGTH:float = 12.5
+const GRAVITY:float = 40.0
 #endregion
 
 #region Sprint
@@ -54,9 +55,9 @@ func handleMovement(_delta:float)->void:
 	# gravidade e pulo
 	if(self.is_on_floor()):
 		if(Input.is_action_just_pressed("Jump")):
-			yMovement += jumpStrength
+			yMovement = JUMP_STRENGTH
 	else:
-		yMovement -= 20*_delta
+		yMovement -= GRAVITY * _delta
 		pass
 	
 	self.velocity = vecMovement * walkingSpeed
