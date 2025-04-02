@@ -46,7 +46,7 @@ func handleMovement(_delta:float)->void:
 	
 	# sprint usage
 	vecMovement = vecMovement*SPRINT_SPEED_MULTIPLIER*int(isSprinting) + vecMovement*int(not isSprinting)
-	stamina += -SPRINT_STAMINA_COST*_delta*int(isSprinting) + STAMINA_RECOVER_FACTOR*_delta*int(not isSprinting)
+	stamina += -SPRINT_STAMINA_COST*_delta*int(isSprinting) + STAMINA_RECOVER_FACTOR*_delta*int(not isSprinting) 
 	stamina = clamp(stamina, 0.0, 100.0)
 	$Label.text = str(stamina)
 	$Label2.text = 'isSprinting: ' + str(isSprinting)

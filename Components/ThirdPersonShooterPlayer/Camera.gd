@@ -8,13 +8,13 @@ extends Node3D
 @export var pathPivotRot:NodePath
 @export var pathPivotBob:NodePath
 @export var pathPivotShake:NodePath
-@export var pathRaycast:NodePath
+@export var pathSpringArm:NodePath
 @export var pathCamera:NodePath
 @onready var pivotHeight:Marker3D = get_node(pathPivotHeight)
 @onready var pivotRot:Marker3D = get_node(pathPivotRot)
 @onready var pivotBob:Marker3D = get_node(pathPivotBob)
 @onready var pivotShake:Marker3D = get_node(pathPivotShake)
-@onready var raycast:RayCast3D = get_node(pathRaycast)
+@onready var springArm:SpringArm3D = get_node(pathSpringArm)
 @onready var camera:Camera3D = get_node(pathCamera)
 #endregion
 
@@ -43,24 +43,15 @@ func _input(_event:InputEvent)->void:
 
 
 func _process(_delta:float)->void:
-	handleCameraCollision()
 	handleCameraSide(_delta)
 	handleCameraBobbing(_delta)
 	return
 
 
-func handleCameraCollision()->void:
-	if(raycast.is_colliding()):
-		var vecToCollPoint = raycast.get_collision_point() - raycast.global_position
-		camera.global_position = raycast.get_collision_point() - vecToCollPoint.normalized()*0.2
-	else:
-		camera.global_position = raycast.global_position + raycast.global_transform.basis.z * raycast.target_position.z
-		pass
-	pass
-
-
 func handleCameraSide(_delta:float)->void:
-	raycast.rotation_degrees.y = lerp(raycast.rotation_degrees.y, 15.0*cameraSide, 8*_delta)
+	springArm.rotation_degrees.y = lerp(springArm.rotation_degrees.y, 15.0*cameraSide, 8*_delta)
+	camera.rotation_degrees.y = lerp(camera.rotation_degrees.y, -15.0*cameraSide, 8*_delta)
+	camera.rotation_degrees.z = lerp(camera.rotation_degrees.z, -4.0*cameraSide, 8*_delta)
 	if(Input.is_action_just_pressed("ToggleCameraSide")): cameraSide *= -1
 	pass
 
@@ -69,6 +60,6 @@ func handleCameraBobbing(_delta:float)->void:
 	currentBobAmplitude = lerp(currentBobAmplitude, MAX_BOB_AMPLITUDE * player.isMoving, 10*_delta)
 	var sprintFrequencyMultiplier:float = (1.0*int(not player.isSprinting) + int(player.isSprinting) * 1.5)
 	var sprintAmplitudeMultiplier:float = (1.0*int(not player.isSprinting) + int(player.isSprinting) * 2.0)
-	pivotBob.position.x =  0.75*cos(Time.get_ticks_msec() * WALK_BOB_FREQUENCY*sprintFrequencyMultiplier) * currentBobAmplitude * sprintAmplitudeMultiplier
+	#pivotBob.position.x =  0.75*cos(Time.get_ticks_msec() * WALK_BOB_FREQUENCY*sprintFrequencyMultiplier) * currentBobAmplitude * sprintAmplitudeMultiplier
 	pivotBob.position.y =  sin(2*Time.get_ticks_msec() * WALK_BOB_FREQUENCY*sprintFrequencyMultiplier) * currentBobAmplitude * sprintAmplitudeMultiplier
 	pass
